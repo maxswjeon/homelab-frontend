@@ -1,13 +1,33 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + Preact + TS</title>
+    <title>Welcome to %VITE_SERVER_NAME%</title>
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+    <link
+      href="http://cdn.jsdelivr.net/gh/joungkyun/font-d2coding/d2coding.css"
+      rel="stylesheet"
+      type="text/css"
+    />
   </head>
   <body>
-    <div id="app"></div>
+    <div id="root">
+      <h1 class="text-4xl font-bold text-center mb-6">
+        Welcome to<br />%VITE_SERVER_NAME%
+      </h1>
+      <noscript>
+        <p class="text-red-500">
+          Javascript is not enabled, so no reachability test was perfromed.
+        </p>
+      </noscript>
+      <div id="app"></div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,33 +1,58 @@
-import { useState } from 'preact/hooks'
-import preactLogo from './assets/preact.svg'
-import viteLogo from '/vite.svg'
-import './app.css'
+import { useEffect, useState } from "preact/hooks";
+import reachTest, {
+  ReachExplanation,
+  defaultExplanation,
+  explainResult,
+} from "./reach";
+
+const ExplanationTypeStyles = {
+  success: "text-green-500",
+  failure: "text-red-500",
+  neutral: "text-black",
+};
 
 export function App() {
-  const [count, setCount] = useState(0)
+  const publicDomain = import.meta.env.VITE_REACHABILITY_SERVER_PUBLIC_DOMAIN;
+  const privateDomain = import.meta.env.VITE_REACHABILITY_SERVER_PRIVATE_DOMAIN;
+  const port = import.meta.env.VITE_REACHABILITY_SERVER_PORT || 443;
+  const path = import.meta.env.VITE_REACHABILITY_SERVER_PATH || "/";
+  const timeout = import.meta.env.VITE_REACHABILITY_SERVER_TIMEOUT || 5000;
+
+  const [result, setResult] = useState<ReachExplanation>(
+    defaultExplanation(!!privateDomain)
+  );
+
+  useEffect(() => {
+    const publicURL = publicDomain && `https://${publicDomain}:${port}${path}`;
+    const privateURL =
+      privateDomain && `https://${privateDomain}:${port}${path}`;
+
+    (async () =>
+      setResult(
+        explainResult(
+          await reachTest(timeout, publicURL, privateURL),
+          !!privateDomain
+        )
+      ))();
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} class="logo" alt="Vite logo" />
-        </a>
-        <a href="https://preactjs.com" target="_blank">
-          <img src={preactLogo} class="logo preact" alt="Preact logo" />
-        </a>
-      </div>
-      <h1>Vite + Preact</h1>
-      <div class="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/app.tsx</code> and save to test HMR
+    <div className="container flex flex-col">
+      <div className="grid grid-cols-[max-content_minmax(max-content,200px)] mx-auto">
+        <p className="text-right mr-2 font-bold">Reachability Test:</p>
+        <p className={`text-left ${ExplanationTypeStyles[result.reach.type]}`}>
+          {result.reach.message}
+        </p>
+        <p className="text-right mr-2 font-bold">DNS Test:</p>
+        <p className={`text-left ${ExplanationTypeStyles[result.dns.type]}`}>
+          {result.dns.message}
         </p>
       </div>
-      <p class="read-the-docs">
-        Click on the Vite and Preact logos to learn more
-      </p>
-    </>
-  )
+      {result.global && (
+        <p className={ExplanationTypeStyles[result.global.type]}>
+          {result.global.message}
+        </p>
+      )}
+    </div>
+  );
 }
