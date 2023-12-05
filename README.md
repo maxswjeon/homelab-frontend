@@ -4,7 +4,7 @@ This is a simple Homelab Reachability Test Frontend.
 
 ## Deployment
 
-Clone this repository and deploy on public web hosting platforms such as [Cloudflare Pages](https://pages.dev), or [Vercel](https://vercel.com), or [AWS Amplify](https://amplify.com/). Deploying this to local environment is discouraged, since this should be available even if the local environment is unavailable. This is a lightweight and static-file only web service, so there will almost zero deployment cost.
+Clone this repository and deploy on public web hosting platforms such as [Cloudflare Pages](https://pages.dev), or [Vercel](https://vercel.com), or [AWS Amplify](https://aws.amazon.com/amplify/). Deploying this to local environment is discouraged, since this should be available even if the local environment is unavailable. This is a lightweight and static-file only web service, so there will almost zero deployment cost.
 
 ## Environment Variables
 
